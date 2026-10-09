@@ -1,0 +1,431 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Azkar — Азкары</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 35px 15px;
+            min-height: 100vh;
+            font-family: Arial, sans-serif;
+            background: radial-gradient(ellipse at top, #1b352b, #0b1511 75%);
+            color: #f0f5ed;
+            text-align: center;
+        }
+
+        h1 {
+            color: #d4e8b5;
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #a8bcae;
+            margin-bottom: 35px;
+        }
+
+        h2 {
+            color: #c5dfa5;
+            margin-top: 0;
+        }
+
+        .card {
+            background: rgba(27, 46, 36, 0.95);
+            border: 1px solid #385943;
+            border-radius: 20px;
+            padding: 25px 18px;
+            margin: 22px auto;
+            max-width: 520px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.22);
+        }
+
+        button {
+            background: linear-gradient(135deg, #608c59, #3d6848);
+            color: white;
+            border: 1px solid #71976a;
+            border-radius: 12px;
+            padding: 12px 18px;
+            margin: 5px;
+            cursor: pointer;
+            font-size: 15px;
+            transition: transform 0.2s, filter 0.2s;
+        }
+
+        button:hover {
+            filter: brightness(1.15);
+            transform: translateY(-2px);
+        }
+
+        button:active {
+            transform: scale(0.97);
+        }
+
+        .dhikr-text {
+            display: none;
+            margin-top: 22px;
+            line-height: 1.8;
+        }
+
+        .dhikr-text.show {
+            display: block;
+        }
+
+        .dhikr-item {
+            background: #14251c;
+            border: 1px solid #304b38;
+            border-radius: 16px;
+            padding: 20px 15px;
+            margin: 18px 0;
+        }
+
+        .dhikr-label {
+            color: #a9c78c;
+            font-size: 13px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .arabic {
+            font-size: 28px;
+            line-height: 2;
+            direction: rtl;
+            color: #e0edc8;
+            margin: 18px 0;
+        }
+
+        .dhikr-translation {
+            color: #d0dbd0;
+            line-height: 1.8;
+        }
+
+        .counter-number {
+            color: #d4e8b5;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .complete {
+            color: #a9d99b;
+            font-weight: bold;
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 25px 10px;
+            }
+
+            h1 {
+                font-size: 29px;
+            }
+
+            .card {
+                padding: 20px 12px;
+            }
+
+            .arabic {
+                font-size: 25px;
+            }
+
+            button {
+                padding: 11px 13px;
+            }
+        }
+
+/* Полоска прогресса */
+.progress-track {
+    width: 100%;
+    height: 10px;
+    background: #263b2e;
+    border-radius: 20px;
+    overflow: hidden;
+    margin: 12px 0 20px;
+    border: 1px solid #385943;
+}
+
+/* Заполненная часть полоски */
+.progress-fill {
+    width: 0%;
+    height: 100%;
+    background: linear-gradient(90deg, #608c59, #c5dfa5);
+    border-radius: 20px;
+    transition: width 0.3s ease;
+}
+    </style>
+</head>
+
+<body>
+
+    <h1 lang="ar">أذكار | Азкары</h1>
+<div class="language-switch">
+    <button onclick="setLanguage('ru')">Русский</button>
+    <button onclick="setLanguage('inh')">ГӀалгӀай мотт</button>
+</div>
+    <p class="subtitle">Сайт для поминания Аллаха</p>
+
+    <!-- Утренние азкары -->
+    <div class="card">
+    <h2 data-ru="Утренние азкары"
+    data-inh="1уйранара азкара́ш">
+    Утренние азкары
+</h2>
+
+        <button onclick="toggleDhikr('morning')">
+            Открыть / закрыть
+        </button>
+
+        <div id="morning" class="dhikr-text">
+
+            <!-- Первый утренний зикр -->
+            <div class="dhikr-item">
+                <p class="dhikr-label">Утренний зикр № 1</p>
+
+                <p class="arabic" lang="ar" dir="rtl">
+                    بِسْمِ اللَّهِ الَّذِي لَا يَضُرُّ مَعَ اسْمِهِ
+                    شَيْءٌ فِي الْأَرْضِ وَلَا فِي السَّمَاءِ
+                    وَهُوَ السَّمِيعُ الْعَلِيمُ
+                </p>
+
+                <p class="dhikr-translation">
+                    <strong>Транслитерация:</strong><br>
+                    Бисмилляhиллязи ля ядурру ма‘асмихи
+                    шай’ун филь-арды ва ля фис-сама’и
+                    ва hувас-Сами‘уль-‘Алим.
+                </p>
+
+                <p class="dhikr-translation">
+                    <strong>Перевод:</strong><br>
+                    С именем Аллаха, с именем Которого ничто
+                    не причинит вреда ни на земле, ни на небе.
+                    Он — Слышащий, Знающий.
+                </p>
+
+                <p>
+                    Выполнено:
+                    <span id="morning-counter" class="counter-number">0</span>
+                </p>
+
+                <p>
+                    Цель: <span id="morning-goal">3</span> повторения
+                </p>
+<div class="progress-track">
+    <div id="morning-progress" class="progress-fill"></div>
+</div>
+                <p>
+                    Осталось:
+                    <span id="morning-remaining">3</span>
+                </p>
+
+                <p id="morning-status"></p>
+
+                <button onclick="increaseCounter('morning')">
+                    Повторил
+                </button>
+
+                <button onclick="resetCounter('morning')">
+                    Сбросить
+                </button>
+            </div>
+
+            <!-- Второй утренний зикр -->
+            <div class="dhikr-item">
+                <p class="dhikr-label">Утренний зикр № 2</p>
+
+                <p class="arabic" lang="ar" dir="rtl">
+                    سُبْحَانَ اللَّهِ وَبِحَمْدِهِ
+                </p>
+
+                <p class="dhikr-translation">
+                    <strong>Транслитерация:</strong><br>
+                    Субханаллахи ва бихамдихи.
+                </p>
+
+                <p class="dhikr-translation">
+                    <strong>Перевод:</strong><br>
+                    Пречист Аллах и хвала Ему.
+                </p>
+
+                <p>
+                    Выполнено:
+                    <span id="morning2-counter" class="counter-number">0</span>
+                </p>
+
+                <p>Цель: 100 повторений</p>
+
+<div class="progress-track">
+    <div id="morning2-progress" class="progress-fill"></div>
+</div>
+                <p>
+                    Осталось:
+                    <span id="morning2-remaining">100</span>
+                </p>
+
+                <p id="morning2-status"></p>
+
+                <button onclick="increaseCounter('morning2')">
+                    Повторил
+                </button>
+
+                <button onclick="resetCounter('morning2')">
+                    Сбросить
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Вечерние азкары -->
+    <div class="card">
+    <h2 data-ru="Вечерние азкары"
+    data-inh="Сайранара азкара́ш">
+    Вечерние азкары
+</h2>
+
+        <button onclick="toggleDhikr('evening')">
+            Открыть / закрыть
+        </button>
+
+        <div id="evening" class="dhikr-text">
+
+            <div class="dhikr-item">
+                <p class="dhikr-label">Вечерний зикр № 1</p>
+
+                <p class="arabic" lang="ar" dir="rtl">
+                    بِسْمِ اللَّهِ الَّذِي لَا يَضُرُّ مَعَ اسْمِهِ
+                    شَيْءٌ فِي الْأَرْضِ وَلَا فِي السَّمَاءِ
+                    وَهُوَ السَّمِيعُ الْعَلِيمُ
+                </p>
+
+                <p class="dhikr-translation">
+                    <strong>Транслитерация:</strong><br>
+                    Бисмилляhиллязи ля ядурру ма‘асмихи
+                    шай’ун филь-арды ва ля фис-сама’и
+                    ва hувас-Сами‘уль-‘Алим.
+                </p>
+
+                <p class="dhikr-translation">
+                    <strong>Перевод:</strong><br>
+                    С именем Аллаха, с именем Которого ничто
+                    не причинит вреда ни на земле, ни на небе.
+                    Он — Слышащий, Знающий.
+                </p>
+
+                <p>
+                    Выполнено:
+                    <span id="evening-counter" class="counter-number">0</span>
+                </p>
+
+                <p>Цель: 3 повторения</p>
+<div class="progress-track">
+    <div id="evening-progress" class="progress-fill"></div>
+</div>
+                <p>
+                    Осталось:
+                    <span id="evening-remaining">3</span>
+                </p>
+
+                <p id="evening-status"></p>
+
+                <button onclick="increaseCounter('evening')">
+                    Повторил
+                </button>
+
+                <button onclick="resetCounter('evening')">
+                    Сбросить
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // Цели для каждого зикра
+        const goals = {
+            morning: 3,
+            morning2: 100,
+            evening: 3
+        };
+
+        // Загружаем сохранённые значения
+        const counts = {
+            morning: Number(localStorage.getItem("morning-count")) || 0,
+            morning2: Number(localStorage.getItem("morning2-count")) || 0,
+            evening: Number(localStorage.getItem("evening-count")) || 0
+        };
+
+        // Открыть или закрыть раздел
+        function toggleDhikr(id) {
+            const element = document.getElementById(id);
+            element.classList.toggle("show");
+        }
+
+        // Обновить отображение одного счётчика
+        function updateCounter(type) {
+            const counter = document.getElementById(type + "-counter");
+            const remaining = document.getElementById(type + "-remaining");
+            const status = document.getElementById(type + "-status");
+
+            counter.textContent = counts[type];
+
+            remaining.textContent = Math.max(
+                0,
+                goals[type] - counts[type]
+            );
+
+            if (counts[type] >= goals[type]) {
+                status.textContent = "Цель достигнута!";
+                status.className = "complete";
+            } else {
+                status.textContent = "";
+                status.className = "";
+            }
+       
+const progress = document.getElementById(type + "-progress");
+
+if (progress) {
+    const percent = Math.min(100, (counts[type] / goals[type]) * 100);
+    progress.style.width = percent + "%";
+}
+ }
+
+        // Увеличить счётчик
+        function increaseCounter(type) {
+            counts[type]++;
+
+            localStorage.setItem(type + "-count", counts[type]);
+
+            updateCounter(type);
+        }
+
+        // Сбросить счётчик
+        function resetCounter(type) {
+            counts[type] = 0;
+
+            localStorage.setItem(type + "-count", 0);
+
+            updateCounter(type);
+        }
+
+        // Показываем сохранённые значения при загрузке
+        updateCounter("morning");
+        updateCounter("morning2");
+        updateCounter("evening");
+  
+function setLanguage(language) {
+    document.documentElement.lang = language === "ru" ? "ru" : "inh";
+
+    document.querySelectorAll("[data-ru][data-inh]").forEach(element => {
+        element.textContent = element.getAttribute("data-" + language);
+    });
+}
+  </script>
+
+</body>
+</html>
