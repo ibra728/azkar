@@ -117,6 +117,15 @@
             font-weight: bold;
         }
 
+        .source-link {
+            color: #c5dfa5;
+            text-decoration: underline;
+            text-underline-offset: 3px;
+        }
+        .source-link:hover {
+            color: #e0edc8;
+        }
+
         @media (max-width: 480px) {
             body {
                 padding: 25px 10px;
@@ -165,10 +174,10 @@
 
     <h1 lang="ar">أذكار | Азкары</h1>
 <div class="language-switch">
-    <button type="button" onclick="setLanguage('ru')">Русский</button>
-    <button type="button" onclick="setLanguage('inh')">ГӀалгӀай мотт</button>
+    <button onclick="setLanguage('ru')">Русский</button>
+    <button onclick="setLanguage('inh')">ГӀалгӀай мотт</button>
 </div>
-    <p class="subtitle" data-ru="Место для поминания Аллаха" data-inh="Дала хьоаха ву моттиг">Место для поминания Аллаха</p>
+    <p class="subtitle">Сайт для поминания Аллаха</p>
 
     <!-- Утренние азкары -->
     <div class="card">
@@ -177,7 +186,9 @@
     Утренние азкары
 </h2>
 
-        <button type="button" data-ru="Открыть / закрыть" data-inh="ДӀадала / дӀакъажала" onclick="toggleDhikr('morning')">Открыть / закрыть</button>
+        <button onclick="toggleDhikr('morning')">
+            Открыть / закрыть
+        </button>
 
         <div id="morning" class="dhikr-text">
 
@@ -204,7 +215,7 @@
                     не причинит вреда ни на земле, ни на небе.
                     Он — Слышащий, Знающий.
                 </p>
-                <p class="dhikr-label">Источник: Абу Дауд, 5088; ат-Тирмизи, 3388.</p>
+                <p class="dhikr-label">Источник: <a class="source-link" href="https://sunnah.com/abudawud:5088" target="_blank" rel="noopener noreferrer">Абу Дауд, 5088</a>; <a class="source-link" href="https://sunnah.com/tirmidhi:3388" target="_blank" rel="noopener noreferrer">ат-Тирмизи, 3388</a>.</p>
 
                 <p>
                     Выполнено:
@@ -235,7 +246,7 @@
 
             <!-- Второй утренний зикр -->
             <div class="dhikr-item">
-                <p class="dhikr-label">Утренний зикр № 2</p>
+                <p class="dhikr-label">Дополнительный ежедневный зикр</p>
 
                 <p class="arabic" lang="ar" dir="rtl">
                     سُبْحَانَ اللَّهِ وَبِحَمْدِهِ
@@ -250,14 +261,14 @@
                     <strong>Перевод:</strong><br>
                     Пречист Аллах и хвала Ему.
                 </p>
-                <p class="dhikr-label">Источник: Сахих Муслим, 2691.</p>
+                <p class="dhikr-label">Источник: <a class="source-link" href="https://sunnah.com/muslim:2691" target="_blank" rel="noopener noreferrer">Сахих Муслим, 2691</a>.</p>
 
                 <p>
                     Выполнено:
                     <span id="morning2-counter" class="counter-number">0</span>
                 </p>
 
-                <p>Цель: 100 повторений</p>
+                <p>Цель: 100 повторений в течение дня</p>
 
 <div class="progress-track">
     <div id="morning2-progress" class="progress-fill"></div>
@@ -276,29 +287,7 @@
                 <button onclick="resetCounter('morning2')">
                     Сбросить
                 </button>
-            </div>
 
-            <!-- Третий утренний зикр -->
-            <div class="dhikr-item">
-                <p class="dhikr-label">Утренний зикр № 3</p>
-                <p class="arabic" lang="ar" dir="rtl">رَضِيتُ بِاللَّهِ رَبًّا، وَبِالْإِسْلَامِ دِينًا، وَبِمُحَمَّدٍ نَبِيًّا</p>
-                <p class="dhikr-translation">
-                    <strong>Транслитерация:</strong><br>
-                    Радиту билляхи раббан, ва бил-ислами динан, ва би-Мухаммадин набийян.
-                </p>
-                <p class="dhikr-translation">
-                    <strong>Перевод:</strong><br>
-                    Я доволен Аллахом как Господом, исламом как религией и Мухаммадом как пророком.
-                </p>
-                <p>Выполнено: <span id="morning3-counter" class="counter-number">0</span></p>
-                <p>Цель: <span id="morning3-goal">3</span> повторения</p>
-                <div class="progress-track"><div id="morning3-progress" class="progress-fill"></div></div>
-                <p>Осталось: <span id="morning3-remaining">3</span></p>
-                <p id="morning3-status"></p>
-                <button onclick="increaseCounter('morning3')">Повторил</button>
-                <button onclick="resetCounter('morning3')">Сбросить</button>
-                <!-- Источник ат-Тирмизи 3389 относится к вечернему чтению; утренний источник следует проверить отдельно. -->
-            </div>
 
             </div>
 
@@ -312,7 +301,9 @@
     Вечерние азкары
 </h2>
 
-        <button type="button" data-ru="Открыть / закрыть" data-inh="ДӀадала / дӀакъажала" onclick="toggleDhikr('evening')">Открыть / закрыть</button>
+        <button onclick="toggleDhikr('evening')">
+            Открыть / закрыть
+        </button>
 
         <div id="evening" class="dhikr-text">
 
@@ -338,7 +329,7 @@
                     не причинит вреда ни на земле, ни на небе.
                     Он — Слышащий, Знающий.
                 </p>
-                <p class="dhikr-label">Источник: Абу Дауд, 5088; ат-Тирмизи, 3388.</p>
+                <p class="dhikr-label">Источник: <a class="source-link" href="https://sunnah.com/abudawud:5088" target="_blank" rel="noopener noreferrer">Абу Дауд, 5088</a>; <a class="source-link" href="https://sunnah.com/tirmidhi:3388" target="_blank" rel="noopener noreferrer">ат-Тирмизи, 3388</a>.</p>
 
                 <p>
                     Выполнено:
@@ -378,13 +369,13 @@
                     Я доволен Аллахом как Господом, исламом как религией и Мухаммадом как пророком.
                 </p>
                 <p>Выполнено: <span id="evening2-counter" class="counter-number">0</span></p>
-                <p>Цель: <span id="evening2-goal">3</span> повторения</p>
+                <p>Цель: <span id="evening2-goal">1</span> повторение</p>
                 <div class="progress-track"><div id="evening2-progress" class="progress-fill"></div></div>
-                <p>Осталось: <span id="evening2-remaining">3</span></p>
+                <p>Осталось: <span id="evening2-remaining">1</span></p>
                 <p id="evening2-status"></p>
                 <button onclick="increaseCounter('evening2')">Повторил</button>
                 <button onclick="resetCounter('evening2')">Сбросить</button>
-                <p class="dhikr-label">Источник: ат-Тирмизи, 3389 (передача оценивается как хасан гариб).</p>
+                <p class="dhikr-label">Источник: <a class="source-link" href="https://sunnah.com/tirmidhi:3389" target="_blank" rel="noopener noreferrer">ат-Тирмизи, 3389</a> (ат-Тирмизи оценил передачу как «хасан гариб»). В этой версии говорится о вечернем чтении; количество повторений не указано.</p>
             </div>
 
             </div>
@@ -397,16 +388,14 @@
         const goals = {
             morning: 3,
             morning2: 100,
-            morning3: 3,
             evening: 3,
-            evening2: 3
+            evening2: 1
         };
 
         // Загружаем сохранённые значения
         const counts = {
             morning: Number(localStorage.getItem("morning-count")) || 0,
             morning2: Number(localStorage.getItem("morning2-count")) || 0,
-            morning3: Number(localStorage.getItem("morning3-count")) || 0,
             evening: Number(localStorage.getItem("evening-count")) || 0,
             evening2: Number(localStorage.getItem("evening2-count")) || 0
         };
@@ -467,28 +456,15 @@ if (progress) {
         // Показываем сохранённые значения при загрузке
         updateCounter("morning");
         updateCounter("morning2");
-        updateCounter("morning3");
         updateCounter("evening");
         updateCounter("evening2");
   
 function setLanguage(language) {
-    const selectedLanguage = language === "inh" ? "inh" : "ru";
-    document.documentElement.lang = selectedLanguage === "ru" ? "ru" : "inh";
+    document.documentElement.lang = language === "ru" ? "ru" : "inh";
 
     document.querySelectorAll("[data-ru][data-inh]").forEach(element => {
-        const translatedText = element.getAttribute("data-" + selectedLanguage);
-        if (translatedText !== null) {
-            element.textContent = translatedText;
-        }
+        element.textContent = element.getAttribute("data-" + language);
     });
-
-    localStorage.setItem("azkar-language", selectedLanguage);
-}
-
-// Применяем выбранный язык после загрузки страницы.
-const savedLanguage = localStorage.getItem("azkar-language");
-if (savedLanguage === "inh" || savedLanguage === "ru") {
-    setLanguage(savedLanguage);
 }
   </script>
 
