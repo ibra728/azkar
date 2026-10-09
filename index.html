@@ -165,10 +165,10 @@
 
     <h1 lang="ar">أذكار | Азкары</h1>
 <div class="language-switch">
-    <button onclick="setLanguage('ru')">Русский</button>
-    <button onclick="setLanguage('inh')">ГӀалгӀай мотт</button>
+    <button type="button" onclick="setLanguage('ru')">Русский</button>
+    <button type="button" onclick="setLanguage('inh')">ГӀалгӀай мотт</button>
 </div>
-    <p class="subtitle">Сайт для поминания Аллаха</p>
+    <p class="subtitle" data-ru="Место для поминания Аллаха" data-inh="Дала хьоаха ву моттиг">Место для поминания Аллаха</p>
 
     <!-- Утренние азкары -->
     <div class="card">
@@ -177,9 +177,7 @@
     Утренние азкары
 </h2>
 
-        <button onclick="toggleDhikr('morning')">
-            Открыть / закрыть
-        </button>
+        <button type="button" data-ru="Открыть / закрыть" data-inh="ДӀадала / дӀакъажала" onclick="toggleDhikr('morning')">Открыть / закрыть</button>
 
         <div id="morning" class="dhikr-text">
 
@@ -278,6 +276,7 @@
                 <button onclick="resetCounter('morning2')">
                     Сбросить
                 </button>
+            </div>
 
             <!-- Третий утренний зикр -->
             <div class="dhikr-item">
@@ -298,7 +297,7 @@
                 <p id="morning3-status"></p>
                 <button onclick="increaseCounter('morning3')">Повторил</button>
                 <button onclick="resetCounter('morning3')">Сбросить</button>
-                <p class="dhikr-label">Источник: ат-Тирмизи, 3389 (передача оценивается как хасан гариб).</p>
+                <!-- Источник ат-Тирмизи 3389 относится к вечернему чтению; утренний источник следует проверить отдельно. -->
             </div>
 
             </div>
@@ -313,9 +312,7 @@
     Вечерние азкары
 </h2>
 
-        <button onclick="toggleDhikr('evening')">
-            Открыть / закрыть
-        </button>
+        <button type="button" data-ru="Открыть / закрыть" data-inh="ДӀадала / дӀакъажала" onclick="toggleDhikr('evening')">Открыть / закрыть</button>
 
         <div id="evening" class="dhikr-text">
 
@@ -366,6 +363,7 @@
                 <button onclick="resetCounter('evening')">
                     Сбросить
                 </button>
+            </div>
 
             <!-- Второй вечерний зикр -->
             <div class="dhikr-item">
@@ -474,11 +472,23 @@ if (progress) {
         updateCounter("evening2");
   
 function setLanguage(language) {
-    document.documentElement.lang = language === "ru" ? "ru" : "inh";
+    const selectedLanguage = language === "inh" ? "inh" : "ru";
+    document.documentElement.lang = selectedLanguage === "ru" ? "ru" : "inh";
 
     document.querySelectorAll("[data-ru][data-inh]").forEach(element => {
-        element.textContent = element.getAttribute("data-" + language);
+        const translatedText = element.getAttribute("data-" + selectedLanguage);
+        if (translatedText !== null) {
+            element.textContent = translatedText;
+        }
     });
+
+    localStorage.setItem("azkar-language", selectedLanguage);
+}
+
+// Применяем выбранный язык после загрузки страницы.
+const savedLanguage = localStorage.getItem("azkar-language");
+if (savedLanguage === "inh" || savedLanguage === "ru") {
+    setLanguage(savedLanguage);
 }
   </script>
 
