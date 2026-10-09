@@ -206,6 +206,7 @@
                     не причинит вреда ни на земле, ни на небе.
                     Он — Слышащий, Знающий.
                 </p>
+                <p class="dhikr-label">Источник: Абу Дауд, 5088; ат-Тирмизи, 3388.</p>
 
                 <p>
                     Выполнено:
@@ -251,6 +252,7 @@
                     <strong>Перевод:</strong><br>
                     Пречист Аллах и хвала Ему.
                 </p>
+                <p class="dhikr-label">Источник: Сахих Муслим, 2691.</p>
 
                 <p>
                     Выполнено:
@@ -276,6 +278,29 @@
                 <button onclick="resetCounter('morning2')">
                     Сбросить
                 </button>
+
+            <!-- Третий утренний зикр -->
+            <div class="dhikr-item">
+                <p class="dhikr-label">Утренний зикр № 3</p>
+                <p class="arabic" lang="ar" dir="rtl">رَضِيتُ بِاللَّهِ رَبًّا، وَبِالْإِسْلَامِ دِينًا، وَبِمُحَمَّدٍ نَبِيًّا</p>
+                <p class="dhikr-translation">
+                    <strong>Транслитерация:</strong><br>
+                    Радиту билляхи раббан, ва бил-ислами динан, ва би-Мухаммадин набийян.
+                </p>
+                <p class="dhikr-translation">
+                    <strong>Перевод:</strong><br>
+                    Я доволен Аллахом как Господом, исламом как религией и Мухаммадом как пророком.
+                </p>
+                <p>Выполнено: <span id="morning3-counter" class="counter-number">0</span></p>
+                <p>Цель: <span id="morning3-goal">3</span> повторения</p>
+                <div class="progress-track"><div id="morning3-progress" class="progress-fill"></div></div>
+                <p>Осталось: <span id="morning3-remaining">3</span></p>
+                <p id="morning3-status"></p>
+                <button onclick="increaseCounter('morning3')">Повторил</button>
+                <button onclick="resetCounter('morning3')">Сбросить</button>
+                <p class="dhikr-label">Источник: ат-Тирмизи, 3389 (передача оценивается как хасан гариб).</p>
+            </div>
+
             </div>
 
         </div>
@@ -316,6 +341,7 @@
                     не причинит вреда ни на земле, ни на небе.
                     Он — Слышащий, Знающий.
                 </p>
+                <p class="dhikr-label">Источник: Абу Дауд, 5088; ат-Тирмизи, 3388.</p>
 
                 <p>
                     Выполнено:
@@ -340,6 +366,29 @@
                 <button onclick="resetCounter('evening')">
                     Сбросить
                 </button>
+
+            <!-- Второй вечерний зикр -->
+            <div class="dhikr-item">
+                <p class="dhikr-label">Вечерний зикр № 2</p>
+                <p class="arabic" lang="ar" dir="rtl">رَضِيتُ بِاللَّهِ رَبًّا، وَبِالْإِسْلَامِ دِينًا، وَبِمُحَمَّدٍ نَبِيًّا</p>
+                <p class="dhikr-translation">
+                    <strong>Транслитерация:</strong><br>
+                    Радиту билляхи раббан, ва бил-ислами динан, ва би-Мухаммадин набийян.
+                </p>
+                <p class="dhikr-translation">
+                    <strong>Перевод:</strong><br>
+                    Я доволен Аллахом как Господом, исламом как религией и Мухаммадом как пророком.
+                </p>
+                <p>Выполнено: <span id="evening2-counter" class="counter-number">0</span></p>
+                <p>Цель: <span id="evening2-goal">3</span> повторения</p>
+                <div class="progress-track"><div id="evening2-progress" class="progress-fill"></div></div>
+                <p>Осталось: <span id="evening2-remaining">3</span></p>
+                <p id="evening2-status"></p>
+                <button onclick="increaseCounter('evening2')">Повторил</button>
+                <button onclick="resetCounter('evening2')">Сбросить</button>
+                <p class="dhikr-label">Источник: ат-Тирмизи, 3389 (передача оценивается как хасан гариб).</p>
+            </div>
+
             </div>
 
         </div>
@@ -350,14 +399,18 @@
         const goals = {
             morning: 3,
             morning2: 100,
-            evening: 3
+            morning3: 3,
+            evening: 3,
+            evening2: 3
         };
 
         // Загружаем сохранённые значения
         const counts = {
             morning: Number(localStorage.getItem("morning-count")) || 0,
             morning2: Number(localStorage.getItem("morning2-count")) || 0,
-            evening: Number(localStorage.getItem("evening-count")) || 0
+            morning3: Number(localStorage.getItem("morning3-count")) || 0,
+            evening: Number(localStorage.getItem("evening-count")) || 0,
+            evening2: Number(localStorage.getItem("evening2-count")) || 0
         };
 
         // Открыть или закрыть раздел
@@ -416,7 +469,9 @@ if (progress) {
         // Показываем сохранённые значения при загрузке
         updateCounter("morning");
         updateCounter("morning2");
+        updateCounter("morning3");
         updateCounter("evening");
+        updateCounter("evening2");
   
 function setLanguage(language) {
     document.documentElement.lang = language === "ru" ? "ru" : "inh";
