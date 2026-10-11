@@ -2,264 +2,864 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#0b1511">
-<meta name="description" content="Утренние и вечерние азкары: арабский текст, транслитерация, перевод и счётчики.">
-<title>Azkar — Азкары</title>
-<style>
-* { box-sizing: border-box; }
-html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
-body {
-  margin: 0;
-  padding: 28px 16px calc(32px + env(safe-area-inset-bottom));
-  min-height: 100vh;
-  font-family: Arial, sans-serif;
-  background: radial-gradient(ellipse at top, #1b352b, #0b1511 75%);
-  color: #f0f5ed;
-  text-align: center;
-  overflow-wrap: anywhere;
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="theme-color" content="#0b1511">
+    <meta name="description" content="Азкары на каждый день с арабским текстом, транслитерацией, переводом и счётчиками повторений.">
+    <title>Azkar — Азкары</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 35px 15px;
+            min-height: 100vh;
+            font-family: Arial, sans-serif;
+            background: radial-gradient(ellipse at top, #1b352b, #0b1511 75%);
+            color: #f0f5ed;
+            text-align: center;
+        }
+
+        h1 {
+            color: #d4e8b5;
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #a8bcae;
+            margin-bottom: 24px;
+        }
+
+        .quick-nav {
+            position: sticky;
+            top: 8px;
+            z-index: 20;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 8px;
+            max-width: 520px;
+            margin: 0 auto 24px;
+            padding: 8px;
+            border: 1px solid rgba(113, 151, 106, .45);
+            border-radius: 16px;
+            background: rgba(11, 21, 17, .92);
+            backdrop-filter: blur(10px);
+        }
+
+        .quick-nav button {
+            flex: 1 1 130px;
+            min-height: 46px;
+            margin: 0;
+            font-weight: 600;
+        }
+
+        html { scroll-behavior: smooth; }
+        .card, .dhikr-item { scroll-margin-top: 90px; }
+
+        h2 {
+            color: #c5dfa5;
+            margin-top: 0;
+        }
+
+        .card {
+            background: rgba(27, 46, 36, 0.95);
+            border: 1px solid #385943;
+            border-radius: 20px;
+            padding: 25px 18px;
+            margin: 22px auto;
+            max-width: 520px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.22);
+        }
+
+        button {
+            background: linear-gradient(135deg, #608c59, #3d6848);
+            color: white;
+            border: 1px solid #71976a;
+            border-radius: 12px;
+            padding: 12px 18px;
+            margin: 5px;
+            cursor: pointer;
+            font-size: 15px;
+            transition: transform 0.2s, filter 0.2s;
+        }
+
+        button:hover {
+            filter: brightness(1.15);
+            transform: translateY(-2px);
+        }
+
+        button:active {
+            transform: scale(0.97);
+        }
+
+        .dhikr-text {
+            display: none;
+            margin-top: 22px;
+            line-height: 1.8;
+        }
+
+        .dhikr-text.show {
+            display: block;
+        }
+
+        .dhikr-item {
+            background: #14251c;
+            border: 1px solid #304b38;
+            border-radius: 16px;
+            padding: 20px 15px;
+            margin: 18px 0;
+        }
+
+        .dhikr-label {
+            color: #a9c78c;
+            font-size: 13px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .arabic {
+            font-size: 28px;
+            line-height: 2;
+            direction: rtl;
+            color: #e0edc8;
+            margin: 18px 0;
+        }
+
+        .dhikr-translation {
+            color: #d0dbd0;
+            line-height: 1.8;
+        }
+
+        .counter-number {
+            color: #d4e8b5;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .complete {
+            color: #a9d99b;
+            font-weight: bold;
+        }
+
+        .source-link {
+            color: #c5dfa5;
+            text-decoration: underline;
+            text-underline-offset: 3px;
+        }
+        .source-link:hover {
+            color: #e0edc8;
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 25px 10px;
+            }
+
+            h1 {
+                font-size: 29px;
+            }
+
+            .card {
+                padding: 20px 12px;
+            }
+
+            .quick-nav {
+                top: 4px;
+                padding: 6px;
+                gap: 6px;
+                margin-bottom: 18px;
+            }
+
+            .quick-nav button {
+                flex-basis: 120px;
+                min-height: 44px;
+                padding: 10px 8px;
+                font-size: 14px;
+            }
+
+            .arabic {
+                font-size: 25px;
+            }
+
+            button {
+                padding: 11px 13px;
+            }
+        }
+
+/* Полоска прогресса */
+.progress-track {
+    width: 100%;
+    height: 10px;
+    background: #263b2e;
+    border-radius: 20px;
+    overflow: hidden;
+    margin: 12px 0 20px;
+    border: 1px solid #385943;
 }
-h1 { color: #d4e8b5; font-size: 36px; margin-bottom: 10px; }
-h2 { color: #c5dfa5; margin-top: 0; }
-.subtitle { color: #a8bcae; margin-bottom: 24px; line-height: 1.6; }
-.site-header, .page-wrap { max-width: 760px; margin: 0 auto; }
-.language-switch {
-  display: flex; justify-content: center; align-items: center;
-  flex-wrap: wrap; gap: 8px; margin: 0 auto 18px;
+
+/* Заполненная часть полоски */
+.progress-fill {
+    width: 0%;
+    height: 100%;
+    background: linear-gradient(90deg, #608c59, #c5dfa5);
+    border-radius: 20px;
+    transition: width 0.3s ease;
 }
-.language-switch button {
-  margin: 0; min-height: 44px; padding: 10px 16px;
-  border-radius: 999px; background: #14251c;
-}
-button {
-  background: linear-gradient(135deg, #608c59, #3d6848);
-  color: white; border: 1px solid #71976a; border-radius: 12px;
-  padding: 12px 18px; margin: 5px; cursor: pointer; font-size: 15px;
-  min-height: 44px; touch-action: manipulation;
-  -webkit-tap-highlight-color: transparent;
-  transition: transform .2s, filter .2s;
-}
-button:hover { filter: brightness(1.15); transform: translateY(-2px); }
-button:active { transform: scale(.97); }
-button:focus-visible, a:focus-visible {
-  outline: 3px solid #d4e8b5; outline-offset: 3px;
-}
-.home-grid {
-  display: grid; grid-template-columns: 1fr; gap: 14px;
-  max-width: 620px; margin: 28px auto;
-}
-.home-link {
-  display: block; text-decoration: none; color: inherit; text-align: left;
-  border: 1px solid #355747; border-radius: 20px; padding: 22px;
-  background: linear-gradient(145deg, rgba(35,73,55,.95), rgba(17,36,28,.96));
-  box-shadow: 0 12px 28px rgba(0,0,0,.18);
-}
-.home-link strong { display: block; font-size: 1.25rem; margin-bottom: 8px; }
-.home-link span { color: #c6d8ca; line-height: 1.5; }
-.resume-link {
-  display: none; margin: 0 auto 18px; padding: 14px 20px;
-  border-radius: 999px; background: #c8e6c9; color: #123b2a;
-  font-weight: 700; text-decoration: none; border: 1px solid #9ac7a5;
-}
-@media (min-width: 560px) {
-  .home-grid { grid-template-columns: 1fr 1fr; }
-  .home-link { min-height: 150px; }
-  .page-wrap { padding-left: 8px; padding-right: 8px; }
-}
-@media (max-width: 600px) {
-  body { padding: 18px 12px calc(28px + env(safe-area-inset-bottom)); }
-  h1 { font-size: clamp(27px, 7vw, 32px); line-height: 1.25; margin-top: 8px; }
-  .subtitle { margin-bottom: 22px; }
-  h2 { font-size: 22px; line-height: 1.35; }
-  button { padding: 11px 13px; }
-}
-@media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
-  *, *::before, *::after {
-    transition-duration: .01ms !important;
-    animation-duration: .01ms !important;
-    animation-iteration-count: 1 !important;
-  }
-}
-</style>
+
+
+        /* Улучшения для телефонов и сенсорного управления */
+        html {
+            -webkit-text-size-adjust: 100%;
+            text-size-adjust: 100%;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            padding: 76px 16px calc(32px + env(safe-area-inset-bottom));
+            overflow-wrap: anywhere;
+        }
+
+        /* Переключатель языка закреплён в верхнем углу */
+        .language-switch {
+            position: fixed;
+            z-index: 1000;
+            top: max(12px, env(safe-area-inset-top));
+            right: 16px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin: 0;
+            padding: 6px;
+            border: 1px solid #385943;
+            border-radius: 999px;
+            background: rgba(10, 25, 17, 0.96);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.28);
+            backdrop-filter: blur(8px);
+        }
+
+        .language-switch button {
+            margin: 0;
+            min-height: 34px;
+            padding: 6px 10px;
+            border-radius: 999px;
+            background: #14251c;
+            font-size: 13px;
+            line-height: 1.1;
+            box-shadow: none;
+        }
+
+        .language-switch button[aria-pressed="true"] {
+            background: linear-gradient(135deg, #608c59, #3d6848);
+            border-color: #a4c58a;
+        }
+
+        @media (max-width: 480px) {
+            body { padding-top: 70px; }
+            .language-switch { top: max(8px, env(safe-area-inset-top)); right: 8px; gap: 3px; padding: 3px; }
+            .language-switch button { min-height: 30px; padding: 5px 7px; font-size: 11px; }
+        }
+
+        .card {
+            width: min(100%, 620px);
+            padding: clamp(18px, 4vw, 28px);
+        }
+
+        .dhikr-text {
+            text-align: left;
+        }
+
+        .dhikr-item {
+            padding: clamp(15px, 3.5vw, 22px);
+            overflow-wrap: anywhere;
+        }
+
+        .arabic {
+            font-size: clamp(26px, 6vw, 34px);
+            line-height: 2.05;
+            overflow-wrap: normal;
+            word-break: normal;
+            text-align: center;
+        }
+
+        .dhikr-translation {
+            font-size: 16px;
+            line-height: 1.75;
+        }
+
+        .source-link {
+            display: inline-block;
+            padding: 3px 0;
+        }
+
+        button {
+            min-height: 44px;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        button:focus-visible,
+        a:focus-visible {
+            outline: 3px solid #d4e8b5;
+            outline-offset: 3px;
+        }
+
+        .dhikr-item button {
+            min-width: 120px;
+        }
+
+        .progress-track {
+            height: 12px;
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 18px 12px calc(28px + env(safe-area-inset-bottom));
+            }
+
+            h1 {
+                font-size: clamp(27px, 7vw, 32px);
+                line-height: 1.25;
+                margin-top: 8px;
+            }
+
+            .subtitle {
+                margin-bottom: 22px;
+                line-height: 1.6;
+            }
+
+            h2 {
+                font-size: 22px;
+                line-height: 1.35;
+            }
+
+            .card {
+                margin: 16px auto;
+                border-radius: 18px;
+            }
+
+            .dhikr-item {
+                margin: 14px 0;
+                border-radius: 14px;
+            }
+
+            .dhikr-label {
+                font-size: 12px;
+                line-height: 1.6;
+                letter-spacing: .4px;
+            }
+
+            .dhikr-item > p {
+                margin-top: 12px;
+                margin-bottom: 12px;
+            }
+
+            .dhikr-item button {
+                width: 100%;
+                margin: 6px 0;
+                min-height: 48px;
+                font-size: 16px;
+            }
+
+            .counter-number {
+                font-size: 26px;
+            }
+        }
+
+        @media (max-width: 360px) {
+            body {
+                padding-left: 8px;
+                padding-right: 8px;
+            }
+
+            .card {
+                padding: 14px 10px;
+            }
+
+            .dhikr-item {
+                padding: 12px 10px;
+            }
+
+            .arabic {
+                font-size: 25px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            html { scroll-behavior: auto; }
+            *, *::before, *::after {
+                transition-duration: .01ms !important;
+                animation-duration: .01ms !important;
+                animation-iteration-count: 1 !important;
+            }
+        }
+
+    
+        .progress-summary {
+            margin: 6px 0 12px;
+            text-align: right;
+            color: #b7cbbd;
+            font-size: 13px;
+            font-variant-numeric: tabular-nums;
+        }
+        .progress-fill { transition: width 180ms ease; }
+        .progress-fill.complete { box-shadow: 0 0 10px rgba(112, 210, 150, 0.28); }
+        .global-reset-wrap {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            margin: 10px auto 18px;
+            clear: both;
+        }
+        .global-reset {
+            display: block;
+            float: none;
+            position: static;
+            margin: 0 auto;
+            background: transparent;
+            color: #c7b887;
+            border: 1px solid rgba(199, 184, 135, 0.55);
+            border-radius: 10px;
+            padding: 10px 14px;
+            font-size: 13px;
+            cursor: pointer;
+            opacity: 0.95;
+        }
+        .global-reset:hover {
+            background: rgba(199, 184, 135, 0.1);
+        }
+    </style>
 </head>
+
 <body>
-<div class="page-wrap">
-  <header class="site-header">
+
     <h1 lang="ar">أذكار | Азкары</h1>
-    <div class="language-switch">
-      <button type="button" onclick="setLanguage('ru')" lang="ru">Русский</button>
-      <button type="button" onclick="setLanguage('inh')" lang="inh">ГӀалгӀай мотт</button>
-    </div>
+<div class="language-switch">
+    <button type="button" onclick="setLanguage('ru')" lang="ru">Русский</button>
+    <button type="button" onclick="setLanguage('inh')" lang="inh">ГӀалгӀай мотт</button>
+</div>
     <p class="subtitle" data-i18n="subtitle">Сайт для поминания Аллаха</p>
     <p id="language-note" class="subtitle" role="status" aria-live="polite" hidden></p>
-  </header>
 
-  <main>
-    <a class="resume-link" id="resume-link" href="morning.html">▶ Продолжить</a>
-    <p>Выбери нужный раздел</p>
-    <nav class="home-grid" aria-label="Разделы азкаров">
-      <a class="home-link" href="morning.html">
-        <strong>☀ Утренние азкары</strong>
-        <span>Зикр для начала дня и ежедневное поминание Аллаха.</span>
-      </a>
-      <a class="home-link" href="evening.html">
-        <strong>☾ Вечерние азкары</strong>
-        <span>Вечерние поминания с транслитерацией, переводом и счётчиками.</span>
-      </a>
+    <nav class="quick-nav" aria-label="Быстрый переход к азкарам">
+        <button type="button" onclick="openAndScrollTo('morning')" data-i18n="quickMorning">☀ Утренние азкары</button>
+        <button type="button" onclick="openAndScrollTo('evening')" data-i18n="quickEvening">☾ Вечерние азкары</button>
     </nav>
-    <p class="subtitle">Прогресс повторений сохраняется на этом устройстве.</p>
-  </main>
+
+    <div class="global-reset-wrap">
+        <button type="button" id="reset-all-progress" class="global-reset" onclick="resetAllProgress()" data-i18n="resetAllButton">Сбросить весь прогресс</button>
+    </div>
+
+    <!-- Утренние азкары -->
+    <div class="card">
+    <h2 data-i18n="morningTitle">Утренние азкары</h2>
+
+        <button id="morning-toggle" data-i18n="openSection" aria-controls="morning" aria-expanded="false" onclick="toggleDhikr('morning')">Открыть раздел</button>
+
+        <div id="morning" class="dhikr-text">
+
+            <!-- Первый утренний зикр -->
+            <div class="dhikr-item">
+                <p class="dhikr-label" data-i18n="morningDhikr1">Утренний зикр № 1</p>
+
+                <p class="arabic" lang="ar" dir="rtl">
+                    بِسْمِ اللَّهِ الَّذِي لَا يَضُرُّ مَعَ اسْمِهِ
+                    شَيْءٌ فِي الْأَرْضِ وَلَا فِي السَّمَاءِ
+                    وَهُوَ السَّمِيعُ الْعَلِيمُ
+                </p>
+
+                <p class="dhikr-translation">
+                    <strong data-i18n="transliteration">Транслитерация:</strong><br>
+                    Бисмилляhиллязи ля ядурру ма‘асмихи
+                    шай’ун филь-арды ва ля фис-сама’и
+                    ва hувас-Сами‘уль-‘Алим.
+                </p>
+
+                <p class="dhikr-translation">
+                    <strong data-i18n="translation">Перевод:</strong><br>
+                    С именем Аллаха, с именем Которого ничто
+                    не причинит вреда ни на земле, ни на небе.
+                    Он — Слышащий, Знающий.
+                </p>
+                <p class="dhikr-label"><span data-i18n="source">Источник:</span> <a class="source-link" href="https://sunnah.com/abudawud:5088" target="_blank" rel="noopener noreferrer">Абу Дауд, 5088</a>; <a class="source-link" href="https://sunnah.com/tirmidhi:3388" target="_blank" rel="noopener noreferrer">ат-Тирмизи, 3388</a>.</p>
+
+                <p>
+                    <span data-i18n="completed">Выполнено:</span>
+                    <span id="morning-counter" class="counter-number">0</span>
+                </p>
+
+                <p>
+                    <span data-i18n="goal">Цель:</span> <span id="morning-goal">3</span> <span data-i18n="repetitions">повторения</span>
+                </p>
+<div class="progress-track">
+    <div id="morning-progress" class="progress-fill"></div>
 </div>
+<p class="progress-summary" id="morning-progress-summary" aria-live="polite">0 / 3 · 0%</p>
+                <p>
+                    <span data-i18n="remaining">Осталось:</span>
+                    <span id="morning-remaining">3</span>
+                </p>
 
-<script>
-const lastPage = localStorage.getItem("azkar-last-page");
-const resumeLink = document.getElementById("resume-link");
+                <p id="morning-status"></p>
 
-if (lastPage === "morning.html" || lastPage === "evening.html") {
-  resumeLink.href = lastPage;
-  resumeLink.textContent = lastPage === "morning.html"
-    ? "▶ Продолжить утренние азкары"
-    : "▶ Продолжить вечерние азкары";
-  resumeLink.style.display = "inline-flex";
-}
+                <button onclick="increaseCounter('morning')">
+                    <span data-i18n="repeatButton">Повторил</span>
+                </button>
 
-const goals = { morning: 3, morning2: 100, evening: 3, evening2: 1 };
-const counts = {};
-Object.keys(goals).forEach(type => {
-  counts[type] = Number(localStorage.getItem(type + "-count")) || 0;
-});
+                <button onclick="resetCounter('morning')">
+                    <span data-i18n="resetButton">Сбросить</span>
+                </button>
+            </div>
 
+            <!-- Второй утренний зикр -->
+            <div class="dhikr-item">
+                <p class="dhikr-label" data-i18n="dailyDhikr">Дополнительный ежедневный зикр</p>
+
+                <p class="arabic" lang="ar" dir="rtl">
+                    سُبْحَانَ اللَّهِ وَبِحَمْدِهِ
+                </p>
+
+                <p class="dhikr-translation">
+                    <strong data-i18n="transliteration">Транслитерация:</strong><br>
+                    Субханаллахи ва бихамдихи.
+                </p>
+
+                <p class="dhikr-translation">
+                    <strong data-i18n="translation">Перевод:</strong><br>
+                    Пречист Аллах и хвала Ему.
+                </p>
+                <p class="dhikr-label"><span data-i18n="source">Источник:</span> <a class="source-link" href="https://sunnah.com/muslim:2691" target="_blank" rel="noopener noreferrer">Сахих Муслим, 2691</a>.</p>
+
+                <p>
+                    <span data-i18n="completed">Выполнено:</span>
+                    <span id="morning2-counter" class="counter-number">0</span>
+                </p>
+
+                <p><span data-i18n="dailyGoal">Цель: 100 повторений в течение дня</span></p>
+
+<div class="progress-track">
+    <div id="morning2-progress" class="progress-fill"></div>
+</div>
+<p class="progress-summary" id="morning2-progress-summary" aria-live="polite">0 / 100 · 0%</p>
+                <p>
+                    <span data-i18n="remaining">Осталось:</span>
+                    <span id="morning2-remaining">100</span>
+                </p>
+
+                <p id="morning2-status"></p>
+
+                <button onclick="increaseCounter('morning2')">
+                    <span data-i18n="repeatButton">Повторил</span>
+                </button>
+
+                <button onclick="resetCounter('morning2')">
+                    <span data-i18n="resetButton">Сбросить</span>
+                </button>
+
+
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Вечерние азкары -->
+    <div class="card">
+    <h2 data-i18n="eveningTitle">Вечерние азкары</h2>
+
+        <button id="evening-toggle" data-i18n="openSection" aria-controls="evening" aria-expanded="false" onclick="toggleDhikr('evening')">Открыть раздел</button>
+
+        <div id="evening" class="dhikr-text">
+
+            <div class="dhikr-item">
+                <p class="dhikr-label" data-i18n="eveningDhikr1">Вечерний зикр № 1</p>
+
+                <p class="arabic" lang="ar" dir="rtl">
+                    بِسْمِ اللَّهِ الَّذِي لَا يَضُرُّ مَعَ اسْمِهِ
+                    شَيْءٌ فِي الْأَرْضِ وَلَا فِي السَّمَاءِ
+                    وَهُوَ السَّمِيعُ الْعَلِيمُ
+                </p>
+
+                <p class="dhikr-translation">
+                    <strong data-i18n="transliteration">Транслитерация:</strong><br>
+                    Бисмилляhиллязи ля ядурру ма‘асмихи
+                    шай’ун филь-арды ва ля фис-сама’и
+                    ва hувас-Сами‘уль-‘Алим.
+                </p>
+
+                <p class="dhikr-translation">
+                    <strong data-i18n="translation">Перевод:</strong><br>
+                    С именем Аллаха, с именем Которого ничто
+                    не причинит вреда ни на земле, ни на небе.
+                    Он — Слышащий, Знающий.
+                </p>
+                <p class="dhikr-label"><span data-i18n="source">Источник:</span> <a class="source-link" href="https://sunnah.com/abudawud:5088" target="_blank" rel="noopener noreferrer">Абу Дауд, 5088</a>; <a class="source-link" href="https://sunnah.com/tirmidhi:3388" target="_blank" rel="noopener noreferrer">ат-Тирмизи, 3388</a>.</p>
+
+                <p>
+                    <span data-i18n="completed">Выполнено:</span>
+                    <span id="evening-counter" class="counter-number">0</span>
+                </p>
+
+                <p><span data-i18n="goalThree">Цель: 3 повторения</span></p>
+<div class="progress-track">
+    <div id="evening-progress" class="progress-fill"></div>
+</div>
+<p class="progress-summary" id="evening-progress-summary" aria-live="polite">0 / 3 · 0%</p>
+                <p>
+                    <span data-i18n="remaining">Осталось:</span>
+                    <span id="evening-remaining">3</span>
+                </p>
+
+                <p id="evening-status"></p>
+
+                <button onclick="increaseCounter('evening')">
+                    <span data-i18n="repeatButton">Повторил</span>
+                </button>
+
+                <button onclick="resetCounter('evening')">
+                    <span data-i18n="resetButton">Сбросить</span>
+                </button>
+            </div>
+
+            <!-- Второй вечерний зикр -->
+            <div class="dhikr-item">
+                <p class="dhikr-label" data-i18n="eveningDhikr2">Вечерний зикр № 2</p>
+                <p class="arabic" lang="ar" dir="rtl">رَضِيتُ بِاللَّهِ رَبًّا، وَبِالْإِسْلَامِ دِينًا، وَبِمُحَمَّدٍ نَبِيًّا</p>
+                <p class="dhikr-translation">
+                    <strong data-i18n="transliteration">Транслитерация:</strong><br>
+                    Радиту билляхи раббан, ва бил-ислами динан, ва би-Мухаммадин набийян.
+                </p>
+                <p class="dhikr-translation">
+                    <strong data-i18n="translation">Перевод:</strong><br>
+                    Я доволен Аллахом как Господом, исламом как религией и Мухаммадом как пророком.
+                </p>
+                <p><span data-i18n="completed">Выполнено:</span> <span id="evening2-counter" class="counter-number">0</span></p>
+                <p><span data-i18n="goal">Цель:</span> <span id="evening2-goal">1</span> <span data-i18n="repetitions">повторение</span></p>
+                <div class="progress-track"><div id="evening2-progress" class="progress-fill"></div></div>
+<p class="progress-summary" id="evening2-progress-summary" aria-live="polite">0 / 1 · 0%</p>
+                <p><span data-i18n="remaining">Осталось:</span> <span id="evening2-remaining">1</span></p>
+                <p id="evening2-status"></p>
+                <button onclick="increaseCounter('evening2')"><span data-i18n="repeatButton">Повторил</span></button>
+                <button onclick="resetCounter('evening2')"><span data-i18n="resetButton">Сбросить</span></button>
+                <p class="dhikr-label"><span data-i18n="source">Источник:</span> <a class="source-link" href="https://sunnah.com/tirmidhi:3389" target="_blank" rel="noopener noreferrer">ат-Тирмизи, 3389</a> (ат-Тирмизи оценил передачу как «хасан гариб»). В этой версии говорится о вечернем чтении; количество повторений не указано.</p>
+            </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // Цели для каждого зикра
+        const goals = {
+            morning: 3,
+            morning2: 100,
+            evening: 3,
+            evening2: 1
+        };
+
+        // Загружаем сохранённые значения
+        const counts = {
+            morning: Number(localStorage.getItem("morning-count")) || 0,
+            morning2: Number(localStorage.getItem("morning2-count")) || 0,
+            evening: Number(localStorage.getItem("evening-count")) || 0,
+            evening2: Number(localStorage.getItem("evening2-count")) || 0
+        };
+
+        // Открыть или закрыть раздел
+        function toggleDhikr(id) {
+            const element = document.getElementById(id);
+            element.classList.toggle("show");
+            updateSectionButton(id);
+        }
+
+        // Быстрый переход: открыть выбранный раздел и прокрутить к нему.
+        function openAndScrollTo(id) {
+            const section = document.getElementById(id);
+            const card = section && section.closest(".card");
+            if (!section || !card) return;
+            if (!section.classList.contains("show")) {
+                section.classList.add("show");
+                updateSectionButton(id);
+            }
+            card.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+
+        // Обновить отображение одного счётчика
+        function updateCounter(type) {
+            const counter = document.getElementById(type + "-counter");
+            const remaining = document.getElementById(type + "-remaining");
+            const status = document.getElementById(type + "-status");
+            const progress = document.getElementById(type + "-progress");
+            const summary = document.getElementById(type + "-progress-summary");
+
+            if (!counter || !remaining || !status || !Object.prototype.hasOwnProperty.call(goals, type)) return;
+
+            counter.textContent = counts[type];
+            remaining.textContent = Math.max(0, goals[type] - counts[type]);
+
+            const goal = goals[type];
+            const completed = Math.min(counts[type], goal);
+            const percent = goal > 0 ? Math.round((completed / goal) * 100) : 0;
+
+            if (summary) summary.textContent = `${completed} / ${goal} · ${percent}%`;
+            if (progress) {
+                progress.style.width = percent + "%";
+                progress.classList.toggle("complete", percent >= 100);
+            }
+
+            if (counts[type] >= goal) {
+                const dictionary = (typeof translations !== "undefined" && translations[currentLanguage()]) || {};
+                const fallback = (typeof translations !== "undefined" && translations.ru) || {};
+                status.textContent = dictionary.completeStatus || fallback.completeStatus || "Выполнено";
+                status.className = "complete";
+            } else {
+                status.textContent = "";
+                status.className = "";
+            }
+        }
+
+        // Увеличить счётчик
+        function increaseCounter(type) {
+            counts[type]++;
+
+            localStorage.setItem(type + "-count", counts[type]);
+
+            updateCounter(type);
+        }
+
+        // <span data-i18n="resetButton">Сбросить</span> счётчик
+        function resetAllProgress() {
+            const t = translations[currentLanguage()];
+            const message = (t && t.confirmResetAll) || translations.ru.confirmResetAll;
+            if (!window.confirm(message)) return;
+
+            Object.keys(counts).forEach(type => {
+                counts[type] = 0;
+                updateCounter(type);
+            });
+            localStorage.setItem("azkarCounts", JSON.stringify(counts));
+        }
+
+        function resetCounter(type) {
+            counts[type] = 0;
+
+            localStorage.setItem(type + "-count", 0);
+
+            updateCounter(type);
+        }
+
+        // Показываем сохранённые значения при загрузке
+        updateCounter("morning");
+        updateCounter("morning2");
+        updateCounter("evening");
+        updateCounter("evening2");
+  
+// Ингушские формулировки добавляем поэтапно; непроверенные строки остаются на русском.
 const translations = {
-  ru: {
-    subtitle: "Сайт для поминания Аллаха",
-    quickMorning: "☀ Утренние азкары",
-    quickEvening: "☾ Вечерние азкары",
-    morningTitle: "Утренние азкары",
-    eveningTitle: "Вечерние азкары",
-    openSection: "Открыть раздел",
-    closeSection: "Закрыть раздел",
-    morningDhikr1: "Утренний зикр № 1",
-    dailyDhikr: "Дополнительный ежедневный зикр",
-    eveningDhikr1: "Вечерний зикр № 1",
-    eveningDhikr2: "Вечерний зикр № 2",
-    transliteration: "Транслитерация:",
-    translation: "Перевод:",
-    source: "Источник:",
-    completed: "Выполнено:",
-    goal: "Цель:",
-    dailyGoal: "Цель: 100 повторений в течение дня",
-    goalThree: "Цель: 3 повторения",
-    remaining: "Осталось:",
-    repeatButton: "Повторил",
-    resetButton: "Сбросить",
-    completeStatus: "Цель достигнута!",
-    pending: "Ингушский перевод интерфейса ещё проверяется; непроверенные надписи временно показаны на русском."
-  },
-  inh: {
-    morningTitle: "Ӏуйранара азкара́ш",
-    eveningTitle: "Сайранара азкара́ш",
-    pending: "Ӏуйранара азкара́ш — утренние азкары; Сайранара азкара́ш — вечерние азкары. Остальные надписи переводятся и проверяются."
-  }
+    ru: {
+        subtitle: "Сайт для поминания Аллаха",
+        quickMorning: "☀ Утренние азкары",
+        quickEvening: "☾ Вечерние азкары",
+        morningTitle: "Утренние азкары",
+        eveningTitle: "Вечерние азкары",
+        openSection: "Открыть раздел",
+        closeSection: "Закрыть раздел",
+        morningDhikr1: "Утренний зикр № 1",
+        dailyDhikr: "Дополнительный ежедневный зикр",
+        eveningDhikr1: "Вечерний зикр № 1",
+        eveningDhikr2: "Вечерний зикр № 2",
+        transliteration: "Транслитерация:", translation: "Перевод:", source: "Источник:",
+        completed: "Выполнено:", goal: "Цель:", dailyGoal: "Цель: 100 повторений в течение дня",
+        goalThree: "Цель: 3 повторения", repetitions: "повторения", remaining: "Осталось:", repeatButton: "Повторил", resetButton: "Сбросить",
+            resetAllButton: "Сбросить весь прогресс",
+            confirmResetAll: "Сбросить весь прогресс всех азкаров?",
+        completeStatus: "Цель достигнута!",
+        pending: "Ингушский перевод интерфейса ещё проверяется; непроверенные надписи временно показаны на русском."
+    },
+    inh: {
+        // Переводы интерфейса предоставлены пользователем.
+        subtitle: "Дала хьоахавеш йола сайта",
+        quickMorning: "☀ Ӏуйранара азкараш",
+        quickEvening: "☾ Сайранара азкараш",
+        morningTitle: "Ӏуйранара азкараш",
+        eveningTitle: "Сайранара азкараш",
+        openSection: "Дакъа хьаделла",
+        closeSection: "Дакъа д1акъовла",
+        completed: "Дийшад:",
+        remaining: "Дийша дезаш диссад:",
+        transliteration: "Алап-алапац хувцар:",
+        translation: "Таржам:",
+        goal: "ЛоархӀам:",
+        dailyGoal: "ЛоархӀам: 100 дийнахьа юхаоалар",
+        goalThree: "ЛоархӀам: 3 юхаалар", repetitions: "юхаалар",
+        source: "ТӀатовжам:",
+        repeatButton: "Юхадараш",
+        resetButton: "ЛархӀархо юхаоттае",
+            resetAllButton: "Кхиамаш юкъара юхаоттабе",
+            confirmResetAll: "Цхьаьна кхиамаш юкъара юхаоттабе?",
+        // Для пунктов, которых не было в пользовательском списке, используется русский fallback.
+    }
 };
 
 function currentLanguage() {
-  return localStorage.getItem("azkar-language") === "inh" ? "inh" : "ru";
+    return localStorage.getItem("azkar-language") === "inh" ? "inh" : "ru";
 }
 
 function setLanguage(language) {
-  const selectedLanguage = language === "inh" ? "inh" : "ru";
-  document.documentElement.lang = selectedLanguage === "inh" ? "inh" : "ru";
-  localStorage.setItem("azkar-language", selectedLanguage);
+    const selectedLanguage = language === "inh" ? "inh" : "ru";
+    document.documentElement.lang = selectedLanguage === "inh" ? "inh" : "ru";
+    localStorage.setItem("azkar-language", selectedLanguage);
+    const dictionary = translations[selectedLanguage];
+    const fallback = translations.ru;
 
-  const dictionary = translations[selectedLanguage];
-  const fallback = translations.ru;
+    document.querySelectorAll(".language-switch button").forEach(button => {
+        button.setAttribute("aria-pressed", String(button.getAttribute("onclick").includes("'" + selectedLanguage + "'")));
+    });
 
-  document.querySelectorAll("[data-i18n]").forEach(element => {
-    const key = element.getAttribute("data-i18n");
-    const value = dictionary[key] || fallback[key];
-    if (value && element.children.length === 0) element.textContent = value;
-  });
+    document.querySelectorAll("[data-i18n]").forEach(element => {
+        const key = element.getAttribute("data-i18n");
+        const value = dictionary[key] || fallback[key];
+        if (value && element.children.length === 0) element.textContent = value;
+        else if (value && element.querySelector("span") && key === "source") {
+            element.querySelector("span").textContent = value;
+        }
+    });
 
-  document.querySelectorAll("[data-counter-toggle]").forEach(button => {
-    const isOpen = document.getElementById(button.dataset.counterToggle)?.classList.contains("show");
-    button.textContent = isOpen
-      ? (dictionary.closeSection || fallback.closeSection)
-      : (dictionary.openSection || fallback.openSection);
-    button.setAttribute("aria-expanded", String(Boolean(isOpen)));
-  });
+    document.querySelectorAll("#morning-toggle, #evening-toggle").forEach(button => {
+        const section = document.getElementById(button.getAttribute("aria-controls"));
+        const isOpen = Boolean(section && section.classList.contains("show"));
+        button.setAttribute("aria-expanded", String(isOpen));
+        button.textContent = isOpen ? dictionary.closeSection || fallback.closeSection : dictionary.openSection || fallback.openSection;
+    });
 
-  const note = document.getElementById("language-note");
-  if (note) {
-    note.textContent = dictionary.pending || fallback.pending;
-    note.hidden = selectedLanguage !== "inh";
-  }
-
-  Object.keys(goals).forEach(updateCounter);
+    const note = document.getElementById("language-note");
+    // Не показываем предупреждение о неполном переводе поверх интерфейса.
+    note.hidden = true;
+    ["morning", "morning2", "evening", "evening2"].forEach(updateCounter);
 }
 
-function updateCounter(type) {
-  const counter = document.getElementById(type + "-counter");
-  if (!counter) return;
-
-  const remaining = document.getElementById(type + "-remaining");
-  const status = document.getElementById(type + "-status");
-  counter.textContent = counts[type];
-
-  if (remaining) remaining.textContent = Math.max(0, goals[type] - counts[type]);
-
-  if (status) {
-    const done = counts[type] >= goals[type];
-    status.textContent = done
-      ? (translations[currentLanguage()].completeStatus || translations.ru.completeStatus)
-      : "";
-    status.className = done ? "complete" : "";
-  }
-
-  const progress = document.getElementById(type + "-progress");
-  if (progress) progress.style.width = Math.min(100, counts[type] / goals[type] * 100) + "%";
-}
-
-function increaseCounter(type) {
-  counts[type]++;
-  localStorage.setItem(type + "-count", counts[type]);
-  updateCounter(type);
-}
-
-function resetCounter(type) {
-  counts[type] = 0;
-  localStorage.setItem(type + "-count", 0);
-  updateCounter(type);
-}
-
-function toggleDhikr(id) {
-  const el = document.getElementById(id);
-  if (!el) return;
-  el.classList.toggle("show");
-
-  const btn = document.querySelector('[data-counter-toggle="' + id + '"]');
-  if (btn) {
+// Обновляет надпись кнопки открытия/закрытия раздела.
+function updateSectionButton(id) {
+    const button = document.getElementById(id + "-toggle");
+    if (!button) return;
+    const isOpen = document.getElementById(id).classList.contains("show");
     const dictionary = translations[currentLanguage()];
     const fallback = translations.ru;
-    const open = el.classList.contains("show");
-    btn.textContent = open
-      ? (dictionary.closeSection || fallback.closeSection)
-      : (dictionary.openSection || fallback.openSection);
-    btn.setAttribute("aria-expanded", String(open));
-  }
+    button.textContent = isOpen ? (dictionary.closeSection || fallback.closeSection) : (dictionary.openSection || fallback.openSection);
+    button.setAttribute("aria-expanded", String(isOpen));
 }
 
-function openAndScrollTo(id) {
-  const section = document.getElementById(id);
-  if (!section) return;
-  section.classList.add("show");
-  section.closest(".card")?.scrollIntoView({ behavior: "smooth", block: "start" });
-}
+// Восстанавливаем выбранный язык после обновления страницы.
+const savedLanguage = localStorage.getItem("azkar-language");
+setLanguage(savedLanguage === "inh" ? "inh" : "ru");
+  </script>
 
-window.addEventListener("DOMContentLoaded", () => {
-  setLanguage(currentLanguage());
-});
-</script>
 </body>
 </html>
